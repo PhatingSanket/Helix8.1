@@ -1,0 +1,47 @@
+﻿@using Glass.Mapper.Sc.Web.Mvc
+@model Coffee.Feature.Carousel.Models.ICarouselFolder
+
+<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+    @if (Model != null && Model.Slides != null && Model.Slides.Any())
+    {
+        int index = 0;
+        int slideIndex = 0;
+        <div class="carousel-indicators">
+            @foreach (var slide in Model.Slides)
+            {
+                int slideNum = index + 1;
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="@index"
+                        class="@(index == 0 ? "active" : "")" aria-current="@(index == 0 ? "true" : "false")" aria-label="Slide @slideNum"></button>
+                index++;
+            }
+        </div>
+        <div class="carousel-inner">
+            @foreach (var slide in Model.Slides)
+            {
+                <div class="@(slideIndex == 0 ? "carousel-item active" : "carousel-item")">
+                    @using (Html.Glass().BeginRenderLink(slide, p => p.CallToAction, isEditable: true))
+                    {
+                        @Html.Glass().RenderImage(slide, p => p.Image, isEditable: true, parameters: new { @class = "d-block w-100" })
+                    }
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>@Html.Glass().Editable(slide, p => p.Title)</h5>
+                    </div>
+                </div>
+                slideIndex++;
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+
+    }
+</div>
+
+
+
+

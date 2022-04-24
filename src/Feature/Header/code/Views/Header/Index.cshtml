@@ -1,0 +1,28 @@
+﻿@using Glass.Mapper.Sc.Web.Mvc
+@model Coffee.Feature.Header.Models.HeaderViewModel
+
+<nav class="navbar navbar-light">
+    <div class="container-fluid">
+        @if (Model != null)
+        {
+            if (Model.Logo != null)
+            {
+                using (Html.Glass().BeginRenderLink(p => p.Logo.SiteLink, isEditable: true))
+                {
+                    @Html.Glass().RenderImage(p => p.Logo.SiteLogo, isEditable: true, parameters: new { w = 310, h = 60 })
+                }
+            }
+            if (Model.Search != null)
+            {
+                <form class="d-flex">
+                    @using (Html.Glass().BeginEditFrame(Model.Search, "Edit Placeholder Text", x => x.SearchPlaceholderText))
+                    {
+                        <input class="form-control search-input" type="search" placeholder="@Model.Search.SearchPlaceholderText" aria-label="Search">
+                    }
+                    <i class="fa fa-solid fa-basket-shopping cart-icon" aria-hidden="true"></i>
+                </form>
+            }
+        }
+    </div>
+</nav>
+

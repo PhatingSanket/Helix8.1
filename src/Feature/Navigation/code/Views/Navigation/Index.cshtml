@@ -1,0 +1,131 @@
+﻿@using Glass.Mapper.Sc.Web.Mvc
+@model Coffee.Feature.Navigation.Models.MenuListViewModel
+
+@if (Model != null && Model.MenuListModel != null && Model.MenuListModel.Any())
+{
+    if (Sitecore.Context.PageMode.IsExperienceEditorEditing)
+    {
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    @foreach (var item in Model.MenuListModel)
+                    {
+                        if (item.NavigationItem.NavigationShowInHeader)
+                        {
+                            <ul class="navbar-nav">
+                                @if (item.Children == null || item.Children.Count == 0)
+                                {
+                                    <li class="nav-item">
+                                        @if (item.NavigationItem.NavigationLink != null)
+                                        {
+                                            using (Html.Glass().BeginRenderLink(item, p => p.NavigationItem.NavigationLink, isEditable: true, attributes: new { @class = "nav-link" }))
+                                            {
+                                                @Html.Glass().Editable(item, p => p.NavigationItem.NavigationTitle)
+                                            }
+
+                                        }
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        @if (item.NavigationItem.NavigationLink != null)
+                                        {
+                                            using (Html.Glass().BeginRenderLink(item, p => p.NavigationItem.NavigationLink, isEditable: true, attributes: new { @class = "nav-link" }))
+                                            {
+                                                @Html.Glass().Editable(item, p => p.NavigationItem.NavigationTitle)
+                                            }
+
+                                        }
+                                        <ul class="" aria-labelledby="">
+                                            @foreach (var childItem in item.Children)
+                                            {
+                                                if (childItem.NavigationItem.NavigationShowInHeader)
+                                                {
+                                                    <li>
+                                                        @if (item.NavigationItem.NavigationLink != null)
+                                                        {
+                                                            using (Html.Glass().BeginRenderLink(childItem, p => p.NavigationItem.NavigationLink, isEditable: true, attributes: new { @class = "dropdown-item" }))
+                                                            {
+                                                                @Html.Glass().Editable(childItem, p => p.NavigationItem.NavigationTitle)
+                                                            }
+                                                        }
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    }
+
+                </div>
+            </div>
+        </nav>
+    }
+    else
+    {
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    @foreach (var item in Model.MenuListModel)
+                    {
+                        if (item.NavigationItem.NavigationShowInHeader)
+                        {
+                            <ul class="navbar-nav">
+                                @if (item.Children == null || item.Children.Count == 0)
+                                {
+                                    <li class="nav-item">
+                                        @if (item.NavigationItem.NavigationLink != null)
+                                        {
+                                            <a id="navLink" class="nav-link" href="@item.NavigationItem.NavigationLink.Url">
+                                                @(item.NavigationItem.NavigationTitle != null ? item.NavigationItem.NavigationTitle.ToUpper() : item.NavigationItem.NavigationTitle)
+                                            </a>
+                                        }
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item dropdown">
+                                        @if (item.NavigationItem.NavigationLink != null)
+                                        {
+                                            <a class="nav-link parent-disable-click" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                @(item.NavigationItem.NavigationTitle != null ? item.NavigationItem.NavigationTitle.ToUpper() : item.NavigationItem.NavigationTitle)
+                                            </a>
+                                        }
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            @foreach (var childItem in item.Children)
+                                            {
+                                                if (childItem.NavigationItem.NavigationShowInHeader)
+                                                {
+                                                    <li>
+                                                        @if (item.NavigationItem.NavigationLink != null)
+                                                        {
+                                                            <a class="dropdown-item" href="@childItem.NavigationItem.NavigationLink.Url">@childItem.NavigationItem.NavigationTitle</a>
+                                                        }
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    }
+
+                </div>
+            </div>
+        </nav>
+    }
+}
+
+
+
+
